@@ -1,11 +1,57 @@
-// TODO: Create a variable that selects the main element, and a variable that selects the back button element
+// Select the main element and the back button
+const mainElement = document.querySelector('main');
+const backButton = document.getElementById('back');
+const blogPostsContainer = document.getElementById('blog-posts');
+const noPostsMessage = document.getElementById('no-posts-message');
 
-// TODO: Create a function that builds an element and appends it to the DOM
+// Function to build and append blog posts to the DOM
+const buildBlogPost = (post) => {
+  const article = document.createElement('article');
+  const title = document.createElement('h2');
+  const author = document.createElement('p');
+  const content = document.createElement('p');
 
-// TODO: Create a function that handles the case where there are no blog posts to display
+  title.textContent = post.title;
+  content.textContent = post.content;
+  author.textContent = `Posted by: ${post.username}`;
 
-// TODO: Create a function called `renderBlogList` that renders the list of blog posts if they exist. If not, call the no posts function.
+  article.appendChild(author);
+  article.appendChild(title);
+  article.appendChild(content);
 
-// TODO: Call the `renderBlogList` function
+  blogPostsContainer.appendChild(article);
+};
 
-// TODO: Redirect to the home page using the `redirectPage` function found in logic.js when the back button is clicked
+// Function to render the blog list
+const renderBlogList = () => {
+  const blogData = JSON.parse(localStorage.getItem('blogData')) || [];
+  
+  if (blogData.length === 0) {
+    noPostsMessage.style.display = 'block';  
+  }else {
+      blogData.forEach(post => {
+          const postElement = document.createElement('div');
+          postElement.innerHTML = `
+              <h2>${post.title}</h2>
+              <p>By: ${post.username}</p>
+              <p>${post.content}</p>
+          `;
+          blogPostsContainer.appendChild(postElement);
+      });
+  }
+  
+  noPostsMessage.style.display = 'none';
+  blogPostsContainer.style.display = 'block';
+
+
+blogPostsContainer.innerHTML = '';
+
+blogData.forEach(post => buildBlogPost(post));
+};
+// Call the renderBlogList function when the page loads
+renderBlogList();
+
+// Redirect to the landing page when the back button is clicked
+backButton.addEventListener('click', () => {
+  redirectPage('./index.html');
+});

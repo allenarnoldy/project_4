@@ -73,8 +73,9 @@ ul {
 */
 header {
   display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
+  justify-content: space-between; /* Pushes the items to the edges */
+  align-items: center; /* Aligns items vertically */
+  padding: 1rem;
 }
 
 header,
